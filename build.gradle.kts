@@ -3,6 +3,7 @@ plugins {
     java
     id("edu.wpi.first.GradleRIO") version "2022.3.1"
     id("maven-publish")
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
 }
 
 group = "com.eaglerobotics"
@@ -55,4 +56,3 @@ publishing {
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
-

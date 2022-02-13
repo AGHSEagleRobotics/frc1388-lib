@@ -13,9 +13,9 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
     wpi.java.deps.wpilib().forEach { implementation(it) }
     wpi.java.vendor.java().forEach { implementation(it) }
+    implementation(kotlin("stdlib"))
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")

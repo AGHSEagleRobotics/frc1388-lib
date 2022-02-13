@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.eaglerobotics"
-version = "0.0.1"
+version = "2022.0.1"
 
 repositories {
     mavenCentral()

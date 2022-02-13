@@ -2,11 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package com.eaglerobotics.lib.shuffleboard.internal;
+package com.eaglerobotics.lib.shuffleboard;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
-import com.eaglerobotics.lib.shuffleboard.Action;
+import com.eaglerobotics.lib.shuffleboard.internal.BindAction;
+import com.eaglerobotics.lib.shuffleboard.internal.OISubsystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -22,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * channel on a particular {@link GenericHID}.
  * @param <TAction> The subtype of action
  */
-public abstract class ActionBinding<TAction extends Action> {
+public abstract class ActionBinding<TAction extends Action, TValue> implements Supplier<TValue> {
   private static final Logger log = LoggerFactory.getLogger(ActionBinding.class);
 
 

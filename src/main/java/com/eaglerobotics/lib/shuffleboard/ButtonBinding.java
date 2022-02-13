@@ -1,6 +1,6 @@
-package com.eaglerobotics.lib.shuffleboard.internal;
+package com.eaglerobotics.lib.shuffleboard;
 
-import com.eaglerobotics.lib.shuffleboard.Action;
+import com.eaglerobotics.lib.shuffleboard.internal.OISubsystem;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS4Controller;
@@ -10,8 +10,9 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
-public class ButtonBinding<T extends Action> extends ActionBinding<T> implements BooleanSupplier {
+public class ButtonBinding<T extends Action> extends ActionBinding<T, Boolean> implements BooleanSupplier {
 
   public ButtonBinding(T axis, OISubsystem oi, ShuffleboardContainer container) {
     super(axis, oi, container);
@@ -51,5 +52,10 @@ public class ButtonBinding<T extends Action> extends ActionBinding<T> implements
   @Override
   public boolean getAsBoolean() {
     return getBoundController().getRawButton(getBoundChannel());
+  }
+
+  @Override
+  public Boolean get() {
+    return getAsBoolean();
   }
 }

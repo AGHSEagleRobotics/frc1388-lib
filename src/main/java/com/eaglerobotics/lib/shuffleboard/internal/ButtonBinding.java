@@ -1,5 +1,6 @@
-package com.eaglerobotics.lib.shuffleboard;
+package com.eaglerobotics.lib.shuffleboard.internal;
 
+import com.eaglerobotics.lib.shuffleboard.Action;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS4Controller;

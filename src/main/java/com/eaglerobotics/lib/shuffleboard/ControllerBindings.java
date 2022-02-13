@@ -3,6 +3,10 @@ package com.eaglerobotics.lib.shuffleboard;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.eaglerobotics.lib.shuffleboard.internal.AxisBinding;
+import com.eaglerobotics.lib.shuffleboard.internal.ButtonBinding;
+import com.eaglerobotics.lib.shuffleboard.internal.OISubsystem;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -19,7 +23,9 @@ public class ControllerBindings<TAxis extends Action, TButton extends Action> {
   private final Map<TAxis, AxisBinding<TAxis>> m_axisBindings = new HashMap<>();
   private final Map<TButton, ButtonBinding<TButton>> m_buttonBindings = new HashMap<>();
 
-  public ControllerBindings(Class<TAxis> axisEnumType, Class<TButton> buttonEnumType, OISubsystem oi) {
+  public ControllerBindings(Class<TAxis> axisEnumType, Class<TButton> buttonEnumType, GenericHID... joysticks) {
+    var oi = new OISubsystem(joysticks);
+
     ShuffleboardTab tab = Shuffleboard.getTab("Controls");
 
     var axisTypes = axisEnumType.getEnumConstants();

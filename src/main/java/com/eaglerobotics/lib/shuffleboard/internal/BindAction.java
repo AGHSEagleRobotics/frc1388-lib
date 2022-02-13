@@ -1,4 +1,4 @@
-package com.eaglerobotics.lib.shuffleboard;
+package com.eaglerobotics.lib.shuffleboard.internal;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.CommandBase;

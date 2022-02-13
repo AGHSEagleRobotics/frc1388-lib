@@ -2,13 +2,14 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package com.eaglerobotics.lib.shuffleboard;
+package com.eaglerobotics.lib.shuffleboard.internal;
 
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import com.eaglerobotics.lib.shuffleboard.Action;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
@@ -19,8 +20,8 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Class that manages the ShuffleBoard aspects of binding a specifc Axis provided
- * in {@link AxisAction} to an particular joystick port and axis
+ * Class that manages the ShuffleBoard aspects of binding a specific Axis provided
+ * in the {@link Action} subtype to a particular joystick port and axis
  * 
  * Also includes some helper functions for retriving the current value of the bound
  * axis from the joystick

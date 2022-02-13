@@ -16,6 +16,7 @@ dependencies {
     wpi.java.deps.wpilib().forEach { implementation(it) }
     wpi.java.vendor.java().forEach { implementation(it) }
     implementation(kotlin("stdlib"))
+    implementation("org.slf4j:slf4j-api:2.0.0-alpha6")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")

@@ -81,12 +81,6 @@ tasks {
         wpi.java.configureTestTasks(this)
     }
 
-    register("foo") {
-        doLast {
-            println(configurations.names)
-        }
-    }
-
     val jacocoTestReport by existing(JacocoReport::class) {
         dependsOn(test)
         reports {

@@ -134,4 +134,12 @@ class ActionBindingTest : WordSpec({
             bindEntry.value.boolean shouldBe false
         }
     }
+
+    "ActionBinding.toString" should {
+        "pretty-print the binding" {
+            val binding = ActionBindingTestImpl(ButtonActions.SHOOT, oi, container)
+
+            "$binding" shouldBe "XboxController 0: 1"
+        }
+    }
 })

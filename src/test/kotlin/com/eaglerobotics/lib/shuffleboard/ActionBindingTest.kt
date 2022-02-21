@@ -1,26 +1,19 @@
 package com.eaglerobotics.lib.shuffleboard
 
 import com.eaglerobotics.lib.shuffleboard.internal.OISubsystem
-import edu.wpi.first.hal.HAL
-import edu.wpi.first.networktables.NetworkTable
-import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.GenericHID
 import edu.wpi.first.wpilibj.XboxController
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget
 import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget
 import edu.wpi.first.wpilibj.shuffleboard.shouldContainAllProperties
 import io.kotest.assertions.assertSoftly
-import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.collections.shouldHaveSingleElement
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import io.mockk.clearAllMocks
-import io.mockk.spyk
 
 private class ActionBindingTestImpl<T : Action>(
     axis: T,
@@ -38,28 +31,13 @@ private class ActionBindingTestImpl<T : Action>(
     }
 }
 
-class ActionBindingTest : WordSpec({
-    lateinit var container: ShuffleboardContainer
-    lateinit var testNetworkTable: NetworkTable
-
+class ActionBindingTest : ShuffleboardWordSpec({
     // These are lazy so that they don't get created until after HAL.initialize has been called
     val driverController by lazy { XboxController(0) }
     val opController by lazy { XboxController(1) }
 
-    val oi by lazy { spyk(OISubsystem(driverController, opController)) }
+    val oi by lazy { OISubsystem(driverController, opController) }
 
-    beforeTest {
-        HAL.initialize(500, 0)
-
-        NetworkTableInstance.getDefault().deleteAllEntries()
-
-        container = Shuffleboard.getTab(it.name.testName)
-        testNetworkTable = NetworkTableInstance.getDefault()
-            .getTable("Shuffleboard")
-            .getSubTable(it.name.testName)
-
-        clearAllMocks()
-    }
     "ActionBinding constructor" should {
         "create shuffleboard grid" {
             ActionBindingTestImpl(ButtonActions.SHOOT, oi, container)
@@ -111,7 +89,7 @@ class ActionBindingTest : WordSpec({
     "ActionBinding.startBinding" should {
         "set the bind button to true" {
             val binding = ActionBindingTestImpl(ButtonActions.SHOOT, oi, container)
-            val bindEntry = testNetworkTable
+            val bindEntry = containerNetworkTable
                 .getSubTable(ButtonActions.SHOOT.label)
                 .getEntry("Bind")
 
@@ -123,7 +101,7 @@ class ActionBindingTest : WordSpec({
     "ActionBinding.stopBinding" should {
         "set the bind button to false" {
             val binding = ActionBindingTestImpl(ButtonActions.SHOOT, oi, container)
-            val bindEntry = testNetworkTable
+            val bindEntry = containerNetworkTable
                 .getSubTable(ButtonActions.SHOOT.label)
                 .getEntry("Bind")
 

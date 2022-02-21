@@ -19,14 +19,12 @@ public class BindAction extends CommandBase {
   private final OISubsystem m_oiSubsystem;
 
   private final ActionBinding<?, ?> m_binding;
-  private final Runnable m_finalize;
 
   private boolean m_done = false;
 
-  public BindAction(ActionBinding<?, ?> binding, OISubsystem oiSubsystem, Runnable finalize) {
+  public BindAction(ActionBinding<?, ?> binding, OISubsystem oiSubsystem) {
     m_oiSubsystem = oiSubsystem;
     m_binding = binding;
-    m_finalize = finalize;
     // each subsystem used by the command must be passed into the
     // addRequirements() method (which takes a vararg of Subsystem)
     addRequirements(oiSubsystem);
@@ -66,6 +64,6 @@ public class BindAction extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    m_finalize.run();
+    m_binding.stopBinding();
   }
 }

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.button.NetworkButton;
 
 import org.slf4j.Logger;
@@ -31,6 +32,8 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
   protected final TAction m_action;
   protected final OISubsystem m_oi;
 
+  private final SimpleWidget m_bindButton;
+
   private GenericHID m_boundController;
   private int m_boundChannel;
 
@@ -47,13 +50,12 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
             "Number of Rows", 1,
             "Label position", "HIDDEN"));
 
-    var bindButton = grid.add("Bind", false)
-        .withWidget(BuiltInWidgets.kToggleButton)
-        .getEntry();
+    m_bindButton = grid.add("Bind", false)
+        .withWidget(BuiltInWidgets.kToggleButton);
 
     grid.addString("label", this::toString);
 
-    new NetworkButton(bindButton).whileHeld(new BindAction(this, m_oi, () -> bindButton.setBoolean(false)));
+    new NetworkButton(m_bindButton.getEntry()).whileHeld(new BindAction(this, m_oi));
 
     log.atDebug()
         .addArgument(axis::getLabel)
@@ -117,6 +119,25 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
         .log("Successfully bound {} to {}");
   }
 
+  /**
+   * Programmatically start trying to bind this action to a new channel.
+   * This is the same as clicking the appropriate "Bind" button on shuffleboard
+   *
+   * Does nothing if already binding this action
+   */
+  public void startBinding() {
+    m_bindButton.getEntry().setBoolean(true);
+  }
+
+  /**
+   * Programmatically stops trying to bind this action to a new channel.
+   * This is the same as clicking the appropriate "Bind" button on shuffleboard
+   *
+   * Does nothing if not currently trying to bind
+   */
+  public void stopBinding() {
+    m_bindButton.getEntry().setBoolean(false);
+  }
 
   private void setupDefaultBinding() {
     if (m_boundController == null) {

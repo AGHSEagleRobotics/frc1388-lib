@@ -2,6 +2,7 @@ package com.eaglerobotics.lib.shuffleboard
 
 import com.eaglerobotics.lib.shuffleboard.internal.OISubsystem
 import edu.wpi.first.hal.HAL
+import edu.wpi.first.networktables.NetworkTable
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.GenericHID
 import edu.wpi.first.wpilibj.XboxController
@@ -12,7 +13,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget
 import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget
 import edu.wpi.first.wpilibj.shuffleboard.shouldContainAllProperties
-import edu.wpi.first.wpilibj.simulation.XboxControllerSim
 import io.kotest.assertions.assertSoftly
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.collections.shouldHaveSingleElement
@@ -40,18 +40,23 @@ private class ActionBindingTestImpl<T : Action>(
 
 class ActionBindingTest : WordSpec({
     lateinit var container: ShuffleboardContainer
+    lateinit var testNetworkTable: NetworkTable
 
+    // These are lazy so that they don't get created until after HAL.initialize has been called
     val driverController by lazy { XboxController(0) }
-    val driverControllerSim by lazy { XboxControllerSim(driverController) }
     val opController by lazy { XboxController(1) }
-    val opControllerSim by lazy { XboxControllerSim(opController) }
 
     val oi by lazy { spyk(OISubsystem(driverController, opController)) }
 
     beforeTest {
         HAL.initialize(500, 0)
+
         NetworkTableInstance.getDefault().deleteAllEntries()
+
         container = Shuffleboard.getTab(it.name.testName)
+        testNetworkTable = NetworkTableInstance.getDefault()
+            .getTable("Shuffleboard")
+            .getSubTable(it.name.testName)
 
         clearAllMocks()
     }
@@ -92,7 +97,7 @@ class ActionBindingTest : WordSpec({
         }
     }
 
-    "ActionBinding.bindto" should {
+    "ActionBinding.bindTo" should {
         "update binding" {
             val binding = ActionBindingTestImpl(ButtonActions.SHOOT, oi, container)
 
@@ -103,5 +108,30 @@ class ActionBindingTest : WordSpec({
         }
     }
 
-    ""
+    "ActionBinding.startBinding" should {
+        "set the bind button to true" {
+            val binding = ActionBindingTestImpl(ButtonActions.SHOOT, oi, container)
+            val bindEntry = testNetworkTable
+                .getSubTable(ButtonActions.SHOOT.label)
+                .getEntry("Bind")
+
+            binding.startBinding()
+            bindEntry.value.boolean shouldBe true
+        }
+    }
+
+    "ActionBinding.stopBinding" should {
+        "set the bind button to false" {
+            val binding = ActionBindingTestImpl(ButtonActions.SHOOT, oi, container)
+            val bindEntry = testNetworkTable
+                .getSubTable(ButtonActions.SHOOT.label)
+                .getEntry("Bind")
+
+            // Set it to true so that we know that .stopBinding() changed it
+            bindEntry.setBoolean(true)
+
+            binding.stopBinding()
+            bindEntry.value.boolean shouldBe false
+        }
+    }
 })

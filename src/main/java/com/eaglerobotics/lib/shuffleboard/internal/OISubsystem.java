@@ -16,7 +16,7 @@ public class OISubsystem extends SubsystemBase {
 
   public OISubsystem(GenericHID... joysticks) {
     if (joysticks.length == 0) {
-      throw new IllegalArgumentException("Must provide at least one joystick ");
+      throw new IllegalArgumentException("Must provide at least one joystick");
     }
     m_joysticks = Arrays.asList(joysticks);
   }

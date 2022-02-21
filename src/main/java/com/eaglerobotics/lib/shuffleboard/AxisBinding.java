@@ -6,7 +6,6 @@ package com.eaglerobotics.lib.shuffleboard;
 
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import com.eaglerobotics.lib.shuffleboard.internal.OISubsystem;
@@ -59,11 +58,11 @@ public class AxisBinding<T extends Action> extends ActionBinding<T, Double> {
           .filter(axis -> axis.value == axisNum)
           .findAny()
           .map(PS4Controller.Axis::toString)
-          .toString());
+          .orElse(axisNum.toString()));
 
 
   @Override
-  public String getChannelName(int channel) {
+  public String getBoundChannelName() {
     var boundController = getBoundController();
 
     var prettifier = axisPrettifiers.getOrDefault(

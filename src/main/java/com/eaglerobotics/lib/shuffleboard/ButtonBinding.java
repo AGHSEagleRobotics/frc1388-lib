@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
 
 public class ButtonBinding<T extends Action> extends ActionBinding<T, Boolean> implements BooleanSupplier {
 
@@ -19,7 +18,8 @@ public class ButtonBinding<T extends Action> extends ActionBinding<T, Boolean> i
   }
 
   @Override
-  public String getChannelName(int channel) {
+  public String getBoundChannelName() {
+    int channel = getBoundChannel();
     var boundJoystick = getBoundController();
     Optional<String> channelName = Optional.empty();
     if (boundJoystick instanceof XboxController) {

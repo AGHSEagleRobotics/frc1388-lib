@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer
 
 abstract class ShuffleboardWordSpec(
     body: ShuffleboardWordSpec.() -> Unit = {},
-): WPILibWordSpec(clearNetworkTable = true) {
+) : WPILibWordSpec(clearNetworkTable = true) {
     lateinit var container: ShuffleboardContainer
     lateinit var containerNetworkTable: NetworkTable
 
     init {
-        this.beforeTest {
-            val tabName = it.descriptor.id.value
+        this.beforeTest { test ->
+            val tabName = test.descriptor.chain().joinToString { it.id.value }
 
             container = Shuffleboard.getTab(tabName)
             containerNetworkTable = NetworkTableInstance.getDefault()

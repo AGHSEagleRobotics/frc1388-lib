@@ -7,7 +7,7 @@ import io.kotest.core.spec.style.WordSpec
 abstract class WPILibWordSpec(
     body: WPILibWordSpec.() -> Unit = {},
     clearNetworkTable: Boolean = true,
-): WordSpec() {
+) : WordSpec() {
     init {
         this.beforeTest {
             HAL.initialize(500, 0)

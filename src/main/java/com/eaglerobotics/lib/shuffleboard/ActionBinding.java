@@ -63,11 +63,11 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
   }
 
   /**
-   * Get a human readable name for the specified channel (ie an axis or button name).
+   * Get a human-readable name for the bound channel (ie an axis or button name).
    * Does NOT include the controller type or port
    * @return Name of the specified channel
    */
-  public abstract String getChannelName(int channel);
+  public abstract String getBoundChannelName();
 
   /**
    * Get the channel (ie axis/button number) currently being selected by the user.
@@ -165,7 +165,7 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
             "%s %d: %s",
             m_boundController.getClass().getSimpleName(),
             m_boundController.getPort(),
-            getChannelName(m_boundChannel)
+            getBoundChannelName()
     );
   }
 }

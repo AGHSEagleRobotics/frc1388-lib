@@ -8,12 +8,16 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget
 import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget
-import edu.wpi.first.wpilibj.shuffleboard.shouldContainAllProperties
+import edu.wpi.first.wpilibj.shuffleboard.shouldHaveAllProperties
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.collections.shouldHaveSingleElement
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+import io.kotest.property.Exhaustive
+import io.kotest.property.checkAll
+import io.kotest.property.exhaustive.enum
+import io.kotest.property.exhaustive.plus
 
 private class ActionBindingTestImpl<T : Action>(
     axis: T,
@@ -24,7 +28,7 @@ private class ActionBindingTestImpl<T : Action>(
         TODO("Not yet implemented")
     }
 
-    override fun getChannelName(channel: Int): String = "$channel"
+    override fun getBoundChannelName(): String = "$boundChannel"
 
     override fun getSelectedChannel(joystick: GenericHID?): Int {
         TODO("Not yet implemented")
@@ -46,7 +50,7 @@ class ActionBindingTest : ShuffleboardWordSpec({
 
             val grid = container.components[0] as ShuffleboardLayout
 
-            grid shouldContainAllProperties mapOf(
+            grid shouldHaveAllProperties mapOf(
                 "Number of Columns" to 2,
                 "Number of Rows" to 1,
                 "Label position" to "HIDDEN"
@@ -68,10 +72,12 @@ class ActionBindingTest : ShuffleboardWordSpec({
         }
 
         "bind to default value" {
-            val binding = ActionBindingTestImpl(ButtonActions.SHOOT, oi, container)
+            checkAll(Exhaustive.enum<ButtonActions>() + Exhaustive.enum<AxisActions>()) { action ->
+                val binding = ActionBindingTestImpl(action, oi, container)
 
-            binding.boundChannel shouldBe binding.action.defaultChannel
-            binding.boundController.port shouldBe binding.action.defaultPort
+                binding.boundChannel shouldBe action.defaultChannel
+                binding.boundController.port shouldBe action.defaultPort
+            }
         }
     }
 

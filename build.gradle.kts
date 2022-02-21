@@ -3,10 +3,12 @@ import edu.wpi.first.toolchain.NativePlatforms
 val slf4jVersion: String by project
 val kotestVersion: String by project
 val mockkVersion: String by project
+val jacocoVersion: String by project
 
 plugins {
     kotlin("jvm") version "1.6.10"
     java
+    jacoco
     id("edu.wpi.first.GradleRIO") version "2022.3.1"
     id("maven-publish")
 
@@ -35,7 +37,7 @@ dependencies {
     wpi.sim.enableRelease().forEach { "simulationRelease"(it) }
 
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
-    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-property:$kotestVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.slf4j:slf4j-simple:$slf4jVersion")
 }
@@ -83,5 +85,16 @@ tasks {
         doLast {
             println(configurations.names)
         }
+    }
+
+    val jacocoTestReport by existing(JacocoReport::class) {
+        dependsOn(test)
+        reports {
+            xml.required.set(true)
+        }
+    }
+
+    test {
+        finalizedBy(jacocoTestReport)
     }
 }

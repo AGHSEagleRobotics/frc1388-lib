@@ -40,7 +40,7 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
 
     setupDefaultBinding();
 
-    var grid = container.getLayout(m_action.getName(), BuiltInLayouts.kGrid)
+    var grid = container.getLayout(m_action.getLabel(), BuiltInLayouts.kGrid)
         .withSize(2, 1)
         .withProperties(Map.of(
             "Number of Columns", 2,
@@ -56,7 +56,7 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
     new NetworkButton(bindButton).whileHeld(new BindAction(this, m_oi, () -> bindButton.setBoolean(false)));
 
     log.atDebug()
-        .addArgument(axis::getName)
+        .addArgument(axis::getLabel)
         .log("ShuffleBoard configured for action {}");
   }
 
@@ -85,7 +85,7 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
    * @return The name of the axis being bound
    */
   public String getActionName() {
-    return m_action.getName();
+    return m_action.getLabel();
   }
 
   /**
@@ -112,7 +112,7 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
     m_boundChannel = channelNum;
 
     log.atInfo()
-        .addArgument(m_action::getName)
+        .addArgument(m_action::getLabel)
         .addArgument(this::toString)
         .log("Successfully bound {} to {}");
   }

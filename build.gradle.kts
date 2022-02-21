@@ -1,8 +1,16 @@
+import edu.wpi.first.toolchain.NativePlatforms
+
+val slf4jVersion: String by project
+val kotestVersion: String by project
+val mockkVersion: String by project
+
 plugins {
     kotlin("jvm") version "1.6.10"
     java
     id("edu.wpi.first.GradleRIO") version "2022.3.1"
     id("maven-publish")
+
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
 }
 
 group = "com.eaglerobotics"
@@ -16,10 +24,20 @@ dependencies {
     wpi.java.deps.wpilib().forEach { implementation(it) }
     wpi.java.vendor.java().forEach { implementation(it) }
     implementation(kotlin("stdlib"))
-    api("org.slf4j:slf4j-api:2.0.0-alpha6")
+    api("org.slf4j:slf4j-api:$slf4jVersion")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    wpi.java.deps.wpilibJniDebug(NativePlatforms.desktop).forEach { "nativeDebug"(it) }
+    wpi.java.vendor.jniDebug(NativePlatforms.desktop).forEach { "nativeDebug"(it) }
+    wpi.sim.enableDebug().forEach { "simulationDebug"(it) }
+
+    wpi.java.deps.wpilibJniRelease(NativePlatforms.desktop).forEach { "nativeRelease"(it) }
+    wpi.java.vendor.jniRelease(NativePlatforms.desktop).forEach { "nativeRelease"(it) }
+    wpi.sim.enableRelease().forEach { "simulationRelease"(it) }
+
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("org.slf4j:slf4j-simple:$slf4jVersion")
 }
 
 java {
@@ -52,7 +70,18 @@ publishing {
     }
 }
 
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
-}
+wpi.sim.addGui().defaultEnabled.set(true)
+wpi.sim.addDriverstation()
 
+tasks {
+    withType<Test>().configureEach {
+        useJUnitPlatform()
+        wpi.java.configureTestTasks(this)
+    }
+
+    register("foo") {
+        doLast {
+            println(configurations.names)
+        }
+    }
+}

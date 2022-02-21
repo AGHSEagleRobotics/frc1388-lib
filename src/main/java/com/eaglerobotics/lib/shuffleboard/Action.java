@@ -5,7 +5,7 @@
 package com.eaglerobotics.lib.shuffleboard;
 
 public interface Action {
-    String getName();
+    String getLabel();
     String getDescription();
 
     Integer getDefaultChannel();

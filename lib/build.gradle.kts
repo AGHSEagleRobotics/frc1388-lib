@@ -6,17 +6,15 @@ val mockkVersion: String by project
 val jacocoVersion: String by project
 
 plugins {
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm")
     java
+    `java-library`
     jacoco
     id("edu.wpi.first.GradleRIO") version "2022.3.1"
     id("maven-publish")
 
-    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
+    id("org.jlleitschuh.gradle.ktlint")
 }
-
-group = "com.eaglerobotics"
-version = "2022.0.1"
 
 repositories {
     mavenCentral()
@@ -55,16 +53,6 @@ kotlin {
 }
 
 publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/AGHSEagleRobotics/frc1388-lib")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
     publications {
         register<MavenPublication>("gpr") {
             from(components["java"])

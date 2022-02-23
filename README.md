@@ -17,6 +17,7 @@ repositories {
     maven {
         url = uri("https://maven.pkg.github.com/AGHSEagleRobotics/frc1388-lib")
         credentials {
+            username = "PublicToken"
             password = "YOUR ENCODED TOKEN"
         }
     }
@@ -43,7 +44,49 @@ included, you will not be able to view the log statements from this library.
 
 # Features
 
+- [BuildInfo Gradle plugin](#buildinfo-plugin)
 - [Shuffleboard Input Bindings](#shuffleboard-input-bindings)
+
+## BuildInfo Plugin
+
+The BuildInfo plugin creates a class called `frc.robot.BuildInfo` that contains some
+metadata about the build and a function to log it via SLF4J.
+
+### Installation
+The gradle plugin is also hosted in GitHub package registries so you will need to configure the plugin repositories.
+To do this, add the same code we added to the `build.gradle` inside the `pluginManagment` block of the `settings.gradle`.
+Eg:
+```groovy
+pluginManagement {
+  repositories {
+    /* ... */
+    maven {
+      url = uri("https://maven.pkg.github.com/AGHSEagleRobotics/frc1388-lib")
+        credentials {
+          username = "PublicToken"
+          password = "YOUR ENCODED TOKEN"
+        }
+    }
+  }
+}
+```
+
+To install the BuildInfo gradle plugin, just add it to the `plugins` section of your `build.gradle`
+```groovy
+plugins {
+    id "com.eaglerobotics.build-info" version "2022.0.1"
+}
+```
+
+### Usage
+
+You may reference any of the stored metadata in the `BuildInfo` class directly, or simply call `.logBuildInfo()`.
+Example:
+```java
+public void robotInit() {
+    BuildInfo.logBuildInfo();
+}
+```
 
 ## Shuffleboard Input Bindings
 

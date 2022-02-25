@@ -7,7 +7,7 @@ plugins {
 gradlePlugin {
     plugins {
         create("gradle-plugin") {
-            id = "com.eaglerobotics.build-info"
+            id = "com.eaglerobotics.gradle-plugin"
             implementationClass = "com.eaglerobotics.gradle.plugin.FRC1388LibPlugin"
         }
     }

@@ -64,7 +64,7 @@ public abstract class GenerateBuildInfoTask extends DefaultTask {
             .append("  public static final String BUILD_DATE = \"").append(buildDate).append("\";\n")
             .append("  public static final String BUILD_TIME = \"").append(buildTime).append("\";\n")
             .append("\n")
-            .append("  private static final Logger log = LoggerFactory.getLogger(BuildInfo.class);\n")
+            .append("  private static final Logger log = LoggerFactory.getLogger(").append(className).append(".class);\n")
             .append("\n")
             .append("  public static void logBuildInfo() {\n")
             .append("    log.info(\"Git version: {} (branch: {} {})\", GIT_VERSION, GIT_BRANCH, GIT_STATUS);\n")

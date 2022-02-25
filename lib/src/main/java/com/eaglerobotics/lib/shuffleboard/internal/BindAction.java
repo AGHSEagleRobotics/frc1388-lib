@@ -1,6 +1,6 @@
 package com.eaglerobotics.lib.shuffleboard.internal;
 
-import com.eaglerobotics.lib.shuffleboard.ActionBinding;
+import com.eaglerobotics.lib.shuffleboard.InputBinding;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -18,11 +18,11 @@ public class BindAction extends CommandBase {
 
   private final OISubsystem m_oiSubsystem;
 
-  private final ActionBinding<?, ?> m_binding;
+  private final InputBinding<?, ?> m_binding;
 
   private boolean m_done = false;
 
-  public BindAction(ActionBinding<?, ?> binding, OISubsystem oiSubsystem) {
+  public BindAction(InputBinding<?, ?> binding, OISubsystem oiSubsystem) {
     m_oiSubsystem = oiSubsystem;
     m_binding = binding;
     // each subsystem used by the command must be passed into the

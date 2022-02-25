@@ -19,11 +19,11 @@ import io.kotest.property.checkAll
 import io.kotest.property.exhaustive.enum
 import io.kotest.property.exhaustive.plus
 
-private class ActionBindingTestImpl<T : Action>(
+private class InputBindingTestImpl<T : InputAction>(
     axis: T,
     oi: OISubsystem,
     container: ShuffleboardContainer
-) : ActionBinding<T, Any?>(axis, oi, container) {
+) : InputBinding<T, Any?>(axis, oi, container) {
     override fun get(): Any? {
         TODO("Not yet implemented")
     }
@@ -35,16 +35,16 @@ private class ActionBindingTestImpl<T : Action>(
     }
 }
 
-class ActionBindingTest : ShuffleboardWordSpec({
+class InputBindingTest : ShuffleboardWordSpec({
     // These are lazy so that they don't get created until after HAL.initialize has been called
     val driverController by lazy { XboxController(0) }
     val opController by lazy { XboxController(1) }
 
     val oi by lazy { OISubsystem(driverController, opController) }
 
-    "ActionBinding constructor" should {
+    "InputBinding constructor" should {
         "create shuffleboard grid" {
-            ActionBindingTestImpl(ButtonActions.SHOOT, oi, container)
+            InputBindingTestImpl(ButtonActions.SHOOT, oi, container)
 
             container.components.shouldHaveSingleElement { it is ShuffleboardLayout }
 
@@ -73,28 +73,28 @@ class ActionBindingTest : ShuffleboardWordSpec({
 
         "bind to default value" {
             checkAll(Exhaustive.enum<ButtonActions>() + Exhaustive.enum<AxisActions>()) { action ->
-                val binding = ActionBindingTestImpl(action, oi, container)
+                val binding = InputBindingTestImpl(action, oi, container)
 
                 binding.boundChannel shouldBe action.defaultChannel
-                binding.boundController.port shouldBe action.defaultPort
+                binding.boundJoystick.port shouldBe action.defaultPort
             }
         }
     }
 
-    "ActionBinding.bindTo" should {
+    "InputBinding.bindTo" should {
         "update binding" {
-            val binding = ActionBindingTestImpl(ButtonActions.SHOOT, oi, container)
+            val binding = InputBindingTestImpl(ButtonActions.SHOOT, oi, container)
 
             binding.bindTo(opController, 5)
 
             binding.boundChannel shouldBe 5
-            binding.boundController shouldBe opController
+            binding.boundJoystick shouldBe opController
         }
     }
 
-    "ActionBinding.startBinding" should {
+    "InputBinding.startBinding" should {
         "set the bind button to true" {
-            val binding = ActionBindingTestImpl(ButtonActions.SHOOT, oi, container)
+            val binding = InputBindingTestImpl(ButtonActions.SHOOT, oi, container)
             val bindEntry = containerNetworkTable
                 .getSubTable(ButtonActions.SHOOT.label)
                 .getEntry("Bind")
@@ -104,9 +104,9 @@ class ActionBindingTest : ShuffleboardWordSpec({
         }
     }
 
-    "ActionBinding.stopBinding" should {
+    "InputBinding.stopBinding" should {
         "set the bind button to false" {
-            val binding = ActionBindingTestImpl(ButtonActions.SHOOT, oi, container)
+            val binding = InputBindingTestImpl(ButtonActions.SHOOT, oi, container)
             val bindEntry = containerNetworkTable
                 .getSubTable(ButtonActions.SHOOT.label)
                 .getEntry("Bind")
@@ -119,9 +119,9 @@ class ActionBindingTest : ShuffleboardWordSpec({
         }
     }
 
-    "ActionBinding.toString" should {
+    "InputBinding.toString" should {
         "pretty-print the binding" {
-            val binding = ActionBindingTestImpl(ButtonActions.SHOOT, oi, container)
+            val binding = InputBindingTestImpl(ButtonActions.SHOOT, oi, container)
 
             "$binding" shouldBe "XboxController 0: 1"
         }

@@ -1,7 +1,7 @@
 package com.eaglerobotics.lib.shuffleboard.internal
 
-import com.eaglerobotics.lib.shuffleboard.Action
-import com.eaglerobotics.lib.shuffleboard.ActionBinding
+import com.eaglerobotics.lib.shuffleboard.InputAction
+import com.eaglerobotics.lib.shuffleboard.InputBinding
 import com.eaglerobotics.lib.shuffleboard.ShuffleboardWordSpec
 import edu.wpi.first.wpilibj.PS4Controller
 import edu.wpi.first.wpilibj.XboxController
@@ -18,7 +18,7 @@ import io.mockk.mockk
 import io.mockk.verify
 
 class BindActionTest : ShuffleboardWordSpec({
-    val binding: ActionBinding<Action, Any?> = mockk(relaxed = true)
+    val binding: InputBinding<InputAction, Any?> = mockk(relaxed = true)
 
     // These are lazy so that they don't get created until after HAL.initialize has been called
     val xboxController by lazy { XboxController(0) }

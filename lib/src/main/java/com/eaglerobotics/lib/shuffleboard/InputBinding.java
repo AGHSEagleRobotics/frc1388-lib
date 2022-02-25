@@ -21,12 +21,12 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * This class represents the binding between a specific {@link Action} and a given
+ * This class represents the binding between a specific {@link InputAction} and a given
  * channel on a particular {@link GenericHID}.
  * @param <TAction> The subtype of action
  */
-public abstract class ActionBinding<TAction extends Action, TValue> implements Supplier<TValue> {
-  private static final Logger log = LoggerFactory.getLogger(ActionBinding.class);
+public abstract class InputBinding<TAction extends InputAction, TValue> implements Supplier<TValue> {
+  private static final Logger log = LoggerFactory.getLogger(InputBinding.class);
 
 
   protected final TAction m_action;
@@ -34,10 +34,10 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
 
   private final SimpleWidget m_bindButton;
 
-  private GenericHID m_boundController;
+  private GenericHID m_boundJoystick;
   private int m_boundChannel;
 
-  public ActionBinding(TAction axis, OISubsystem oi, ShuffleboardContainer container) {
+  public InputBinding(TAction axis, OISubsystem oi, ShuffleboardContainer container) {
     m_action = axis;
     m_oi = oi;
 
@@ -93,12 +93,12 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
   /**
    * @return The {@link GenericHID} this action is currently bound to
    */
-  public GenericHID getBoundController() {
-    return m_boundController;
+  public GenericHID getBoundJoystick() {
+    return m_boundJoystick;
   }
 
   /**
-   * @return The channel on the {@link this#getBoundController()}
+   * @return The channel on the {@link this#getBoundJoystick()}
    */
   public int getBoundChannel() {
     return m_boundChannel;
@@ -110,7 +110,7 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
    * @param channelNum The channel number to bind to
    */
   public void bindTo(GenericHID joystick, int channelNum) {
-    m_boundController = joystick;
+    m_boundJoystick = joystick;
     m_boundChannel = channelNum;
 
     log.atInfo()
@@ -140,7 +140,7 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
   }
 
   private void setupDefaultBinding() {
-    if (m_boundController == null) {
+    if (m_boundJoystick == null) {
       var joysticks = m_oi.getJoysticks();
       var defaultJoystick = joysticks.get(0);
       for (GenericHID joystick : joysticks) {
@@ -163,8 +163,8 @@ public abstract class ActionBinding<TAction extends Action, TValue> implements S
   public String toString() {
     return String.format(
             "%s %d: %s",
-            m_boundController.getClass().getSimpleName(),
-            m_boundController.getPort(),
+            m_boundJoystick.getClass().getSimpleName(),
+            m_boundJoystick.getPort(),
             getBoundChannelName()
     );
   }

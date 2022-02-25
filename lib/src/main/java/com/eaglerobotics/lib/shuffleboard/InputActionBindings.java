@@ -13,15 +13,15 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 /**
  * Top-level class to interact with the ShuffleBoard controlelr bindings
  *
- * Simply call {@link ControllerBindings#getAxisValue(TAxis)} to get the
+ * Simply call {@link InputActionBindings#getAxisValue(TAxis)} to get the
  * current value of the bound axis
  */
-public class ControllerBindings<TAxis extends Action, TButton extends Action> {
+public class InputActionBindings<TAxis extends InputAction, TButton extends InputAction> {
 
   private final Map<TAxis, AxisBinding<TAxis>> m_axisBindings = new HashMap<>();
   private final Map<TButton, ButtonBinding<TButton>> m_buttonBindings = new HashMap<>();
 
-  public ControllerBindings(Class<TAxis> axisEnumType, Class<TButton> buttonEnumType, GenericHID... joysticks) {
+  public InputActionBindings(Class<TAxis> axisEnumType, Class<TButton> buttonEnumType, GenericHID... joysticks) {
     var oi = new OISubsystem(joysticks);
 
     ShuffleboardTab tab = Shuffleboard.getTab("Controls");

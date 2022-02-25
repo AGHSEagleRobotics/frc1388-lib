@@ -92,7 +92,7 @@ a joystick axis and one for inputs bound to joystick buttons.
     <summary>Example</summary>
 
 ```java
-public enum AxisAction implements Action {
+public enum AxisAction implements InputAction {
 
     LEFT_DRIVE("Left Drive", null, 0, XboxController.Axis.kLeftY.value),
     RIGHT_DRIVE("Right Drive", null, 0, XboxController.Axis.kRightY.value);
@@ -139,19 +139,19 @@ you plan to use for your robot.
     <summary>Example</summary>
 
 ```java
-new ControllerBindings<>(AxisInput.class, ButtonInput.class, new XboxController(0));
+new InputActionBindings<>(AxisActions.class, ButtonActions.class, new XboxController(0));
 ```
 </details>
 
 ### Usage
 
-Once you have an instance of `ControllerBindings`, you can get the current value
+Once you have an instance of `InputAction`, you can get the current value
 of a binding by calling `getAxisValue()` or `getButtonValue()`.
 Alternatively you can call `getAxisBinding()` or `getButtonBinding()` to get the `ActionBinding`
-for that input. You can then call `get` on the `ActionBinding` to get the current value of the bound input.
+for that input. You can then call `get` on the `InputBinding` to get the current value of the bound input.
 
 Commands can be bound to button inputs using the normal `Trigger`/`Button` API by calling 
-`controllerBindings.getButton()`.
+`bindings.getButton()`.
 
 <details>
 <summary>Example</summary>
@@ -162,4 +162,4 @@ bindings.getButton(ButtonInput.FIRE)
 ```
 </details>
 
-Bindings may be changed programmatically by calling `ActionBinding.bindTo()`.
+Bindings may be changed programmatically by calling `InputBinding.bindTo()`.

@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
-public class ButtonBinding<T extends Action> extends ActionBinding<T, Boolean> implements BooleanSupplier {
+public class ButtonBinding<T extends InputAction> extends InputBinding<T, Boolean> implements BooleanSupplier {
 
   public ButtonBinding(T axis, OISubsystem oi, ShuffleboardContainer container) {
     super(axis, oi, container);
@@ -20,7 +20,7 @@ public class ButtonBinding<T extends Action> extends ActionBinding<T, Boolean> i
   @Override
   public String getBoundChannelName() {
     int channel = getBoundChannel();
-    var boundJoystick = getBoundController();
+    var boundJoystick = getBoundJoystick();
     Optional<String> channelName = Optional.empty();
     if (boundJoystick instanceof XboxController) {
       channelName =  Arrays.stream(XboxController.Button.values())
@@ -51,7 +51,7 @@ public class ButtonBinding<T extends Action> extends ActionBinding<T, Boolean> i
 
   @Override
   public boolean getAsBoolean() {
-    return getBoundController().getRawButton(getBoundChannel());
+    return getBoundJoystick().getRawButton(getBoundChannel());
   }
 
   @Override

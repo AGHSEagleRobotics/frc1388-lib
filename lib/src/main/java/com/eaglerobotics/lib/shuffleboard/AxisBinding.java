@@ -20,12 +20,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Class that manages the ShuffleBoard aspects of binding a specific Axis provided
- * in the {@link Action} subtype to a particular joystick port and axis
+ * in the {@link InputAction} subtype to a particular joystick port and axis
  * 
  * Also includes some helper functions for retriving the current value of the bound
  * axis from the joystick
  */
-public class AxisBinding<T extends Action> extends ActionBinding<T, Double> {
+public class AxisBinding<T extends InputAction> extends InputBinding<T, Double> {
 
   private static final Logger log = LoggerFactory.getLogger(AxisBinding.class);
 
@@ -43,7 +43,7 @@ public class AxisBinding<T extends Action> extends ActionBinding<T, Double> {
    */
   @Override
   public Double get() {
-    return getBoundController().getRawAxis(getBoundChannel());
+    return getBoundJoystick().getRawAxis(getBoundChannel());
   }
 
   private static final Map<Class<? extends GenericHID>, Function<Integer, String>> axisPrettifiers = Map.of(
@@ -63,7 +63,7 @@ public class AxisBinding<T extends Action> extends ActionBinding<T, Double> {
 
   @Override
   public String getBoundChannelName() {
-    var boundController = getBoundController();
+    var boundController = getBoundJoystick();
 
     var prettifier = axisPrettifiers.getOrDefault(
             boundController.getClass(),

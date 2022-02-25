@@ -1,9 +1,5 @@
 plugins {
     // Declare plugin versions but don't apply to base project
-    listOf(
-        kotlin("jvm") version "1.6.10",
-        id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
-    ).forEach { it apply false }
 
     id("maven-publish")
 }

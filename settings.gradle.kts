@@ -1,6 +1,6 @@
 rootProject.name = "frc1388-lib"
 
 include("lib")
-include("build-info")
+include("gradle-plugin")
 
 project(":lib").name = "frc1388-lib"

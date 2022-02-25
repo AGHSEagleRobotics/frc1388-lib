@@ -6,14 +6,14 @@ val mockkVersion: String by project
 val jacocoVersion: String by project
 
 plugins {
-    kotlin("jvm")
+    kotlin("jvm") version "1.6.10"
     java
     `java-library`
     jacoco
     id("edu.wpi.first.GradleRIO") version "2022.3.1"
     id("maven-publish")
 
-    id("org.jlleitschuh.gradle.ktlint")
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
 }
 
 repositories {
